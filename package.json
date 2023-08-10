@@ -11,6 +11,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^16.1.0",
+    "@angular/cdk": "^16.1.7",
     "@angular/common": "^16.1.0",
     "@angular/compiler": "^16.1.0",
     "@angular/core": "^16.1.0",
@@ -20,6 +21,7 @@
     "@angular/platform-browser-dynamic": "^16.1.0",
     "@angular/router": "^16.1.0",
     "@material/snackbar": "^14.0.0",
+    "@material/theme": "^14.0.0",
     "@reactivex/rxjs": "^5.5.3",
     "dialog": "^0.3.1",
     "rxjs": "^7.8.1",
