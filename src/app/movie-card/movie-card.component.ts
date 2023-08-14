@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserRegistrationService } from '../fetch-api-data.service';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -9,7 +11,11 @@ import { UserRegistrationService } from '../fetch-api-data.service';
 })
 export class MovieCardComponent {
   movies: any[] = [];
-  constructor(public fetchApiData: UserRegistrationService) { }
+  constructor(
+    public fetchApiData: UserRegistrationService,
+    public snackBar: MatSnackBar,
+    public dialog: MatDialog,
+    ) { }
 
   ngOnInit(): void {
     this.getMovies();
@@ -23,3 +29,14 @@ export class MovieCardComponent {
     })
   }
 }
+
+
+
+// getGenre(name: string, description: string): void {
+//   this.dialog.open(MovieInfoComponent, {
+//     data: {
+//       title: name,
+//       content: RTCSessionDescription,
+//     }
+//   })
+// }

@@ -15,7 +15,7 @@ mat-progress-spinner {
 
 .movie-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(300px, 1fr));
+    grid-template-columns: repeat(5, minmax(300px, 1fr));
     grid-gap: 1rem;
     margin: 0 auto;
 }
@@ -30,7 +30,7 @@ mat-progress-spinner {
 
 mat-card {
     align-items: center;
-    min-width: 420px;
+    min-width: 358px;
 }
 
 img {
