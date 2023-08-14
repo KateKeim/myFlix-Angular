@@ -2,12 +2,11 @@ import { Component, Input, OnInit } from '@angular/core';
 
 import { Router } from '@angular/router';
 
-import { UserRegistrationService } from '../fetch-api-data.service';
+import { FetchApiDataService } from '../fetch-api-data.service';
 
 import { MatDialogRef } from '@angular/material/dialog';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { R3PartialDeclaration } from '@angular/compiler';
 
 
 
@@ -21,7 +20,7 @@ export class UserLoginFormComponent implements OnInit {
   @Input() userData = { Username: '', Password: '' };
 
   constructor(
-    public fetchApiData: UserRegistrationService,
+    public fetchApiData: FetchApiDataService,
     public dialogRef: MatDialogRef<UserLoginFormComponent>,
     public snackBar: MatSnackBar,
     private router: Router,
@@ -29,14 +28,19 @@ export class UserLoginFormComponent implements OnInit {
 
   ngOnInit(): void { }
 
+  /**
+   * on login token, userdata, and Username will be stored in localstorage. 
+   * user will be sent to the movie page 
+   */
+
   loginUser(): void {
     this.fetchApiData.userLogin(this.userData).subscribe((data) => {
       
-      localStorage.setItem("user", JSON.stringify(data.user.Username))
+      localStorage.setItem("user", JSON.stringify(data.user))
       localStorage.setItem("token", data.token);
-      this.router.navigate(['movies']);
+      localStorage.setItem('Username', data.user.Username)
 
-      // console.log(data)
+      this.router.navigate(['movies']);
       this.dialogRef.close();
       this.snackBar.open('you\'ve been logged in', 'OK', {
         duration: 2000
