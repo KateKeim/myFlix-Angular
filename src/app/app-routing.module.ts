@@ -4,14 +4,10 @@ import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 import { MovieCardComponent } from './movie-card/movie-card.component';
 
 
-const appRoutes: Routes = [
-  {path: 'welcome', component: WelcomePageComponent},
-  {path: 'movies', component: MovieCardComponent},
-  {path: '', redirectTo:'welcome', pathMatch:'prefix'},
-];
+const routes: Routes = [];
 
 @NgModule({
-  imports: [RouterModule.forRoot(appRoutes)],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

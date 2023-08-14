@@ -11,7 +11,7 @@ const apiUrl = 'https://movie-dash.herokuapp.com/'
 @Injectable({
   providedIn: 'root'
 })
-export class UserRegistrationService {
+export class FetchApiDataService {
   // Inject the HttpClient module to the constructor params
   // This will provide HttpClient to the entire class
   // via this.http

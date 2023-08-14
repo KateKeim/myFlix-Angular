@@ -12,7 +12,7 @@ const apiUrl = "http://localhost:8080/"
 @Injectable({
   providedIn: 'root'
 })
-export class FetchApiDataService {
+export class UserRegistrationService {
   // Inject the HttpClient module to the constructor params
   // This will provide HttpClient to the entire class
   // via this.http

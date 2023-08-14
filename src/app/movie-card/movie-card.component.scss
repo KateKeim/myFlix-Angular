@@ -1,0 +1,40 @@
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+mat-progress-spinner {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -25px 0 0 -25px;
+}
+
+.movie-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(300px, 1fr));
+    grid-gap: 1rem;
+    margin: 0 auto;
+}
+
+.movie-grid-items {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    place-self: center;
+    padding: 5px;
+
+}
+
+mat-card {
+    align-items: center;
+    min-width: 420px;
+}
+
+img {
+    max-height: 350px;
+    max-width: 450px;
+    object-fit: contain;
+}
