@@ -11,6 +11,7 @@ import { MovieGenreComponent } from '../movie-genre/movie-genre.component';
   styleUrls: ['./movie-card.component.scss']
 })
 
+
 export class MovieCardComponent implements OnInit {
   movies: any[] = [];
 
@@ -33,6 +34,14 @@ getMovies(): void {
   });
 }
 
+
+/**
+ * 
+ * @param name 
+ * @param description
+ * param data will passeds into the dialog when opened.
+ */
+
 getGenre(name: string, description: string): void {
   this.dialog.open(MovieGenreComponent, {
     data: {
@@ -41,6 +50,13 @@ getGenre(name: string, description: string): void {
     }
   })
 }
+
+/**
+ * 
+ * @param name 
+ * @param bio 
+ * param data will passeds into the dialog when opened.
+ */
 
 getDirector(name: string, bio: string): void {
   this.dialog.open(MovieGenreComponent, {
@@ -51,6 +67,12 @@ getDirector(name: string, bio: string): void {
   })
 }
 
+/**
+ * 
+ * @param description 
+ * param data will passeds into the dialog when opened.
+ */
+
 getSynopsis(description: string): void {
   this.dialog.open(MovieGenreComponent, {
     data: {
@@ -60,6 +82,11 @@ getSynopsis(description: string): void {
   })
 }
 
+/**
+ * 
+ * @param id 
+ * add movie to the user profile
+ */
 addFavorite(id: string): void {
   this.fetchApiData.addFavoriteMovie(id).subscribe((Response: any) => {
     this.snackBar.open('added to favorites', 'OK', {

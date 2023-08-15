@@ -30,6 +30,8 @@ export class UserProfilePageComponent implements OnInit {
     this.getUser();
   }
 
+//get all the user data and display it.
+  
 getUser(): void {
   this.fetchApiData.getOneUser().subscribe((response: any) => {
     this.user = response;
@@ -60,6 +62,8 @@ editUser(): void {
   });
 }
 
+
+//delete user will delete their account permanently and be sent back to the welcome screen.
 deleteUser(): void {
   if (confirm('are you sure?')) {
     this.router.navigate(['welcome']).then(() => {
