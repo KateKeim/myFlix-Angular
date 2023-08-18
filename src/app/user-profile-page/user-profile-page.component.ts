@@ -1,86 +1,79 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
-import { UserRegistrationService } from '../fetch-api-data.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { FetchApiDataService } from '../fetch-api-data.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialogRef } from '@angular/material/dialog';
 import { formatDate } from '@angular/common';
 
 @Component({
-  selector: 'app-user-profile-page',
+  selector: 'app-profile-view',
   templateUrl: './user-profile-page.component.html',
   styleUrls: ['./user-profile-page.component.scss']
 })
-export class UserProfilePageComponent implements OnInit {
 
+export class ProfileViewComponent implements OnInit {
   user: any = {};
+  favoriteMovies: any = [];
 
-  favoriteMovies: any[] = [];
-
-
-
-  @Input() userData = { Name: '', Username: '', Password: '', Email: '', Birthday: '', };
+  @Input() userData = { Username: '', Password: '', Email: '', Birthday: '' };
 
   constructor(
-    public fetchApiData: UserRegistrationService,
+    public fetchApiData: FetchApiDataService,
+    //public dialogRef: MatDialogRef<ProfileViewComponent>,
     public snackBar: MatSnackBar,
-    private router: Router,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     this.getUser();
   }
 
-//get all the user data and display it.
-  
-getUser(): void {
-  this.fetchApiData.getOneUser().subscribe((response: any) => {
-    this.user = response;
-    this.userData.Username = this.user.Username;
-    this.userData.Email = this.user.Email;
-    this.user.Birthday = formatDate(this.user.Birthday, 'yyyy-MM-dd', 'en-US', 'UTC+0');
-
-
-    this.fetchApiData.getAllMovies().subscribe((response: any) => {
-      this.favoriteMovies = response.filter((m: { _id: any }) => this.user.FavoriteMovies.indexOf(m._id) >= 0)
-    })
-  })
-}
-
-editUser(): void {
-  this.fetchApiData.editUser(this.userData).subscribe((data) => {
-    localStorage.setItem('user', JSON.stringify(data));
-    localStorage.setItem('Username', data.Username);
-    // console.log(data);
-    this.snackBar.open('User has been updated', 'OK', {
-      duration: 2000
-    })
-    window.location.reload();
-  }, (result) => {
-    this.snackBar.open(result, 'OK', {
-      duration: 2000
-    })
-  });
-}
-
-
-//delete user will delete their account permanently and be sent back to the welcome screen.
-deleteUser(): void {
-  if (confirm('are you sure?')) {
-    this.router.navigate(['welcome']).then(() => {
-      this.snackBar.open(
-        'You have successfully deleted your account',
-        'OK',
-        {
-          duration: 2000,
-        }
-      );
-    });
-    this.fetchApiData.deleteUser().subscribe((result) => {
-      // console.log(result);
-      localStorage.clear();
+  getUser(): void {
+    this.fetchApiData.getUser().subscribe((user) => {
+      console.log(user);
+      this.user = user;
+      this.userData.Username = this.user.Username;
+      this.userData.Email = this.user.Email;
+      this.userData.Birthday = formatDate(this.user.Birthday, 'yyyy-MM-dd', 'en-US', 'UTC+0' );
+    
+      this.fetchApiData.getAllMovies().subscribe((response: any) => {
+        this.favoriteMovies = response.filter((movie: any) => this.user.FavoriteMovies.includes(movie._id));
+        return this.user;
+      }); 
     });
   }
+    
+
+  updateUser(): void {
+    this.fetchApiData.updateUser(this.userData).subscribe((result) => {
+      console.log(result);
+      localStorage.setItem('user', JSON.stringify(result));
+
+      this.snackBar.open('User successfully updated', 'OK', {
+        duration: 2000
+      });
+    }, (result) => {
+      this.snackBar.open(result, 'OK', {
+        duration: 2000
+      });
+    });
+  }
+
+
+  deleteUser(): void {
+    this.fetchApiData.deleteUser().subscribe((result) => {
+      localStorage.clear();
+      console.log(result.message);
+      this.router.navigate(['welcome']);
+      this.snackBar.open(result.message, 'OK', {
+        duration: 2000
+      });
+    }, (result) => {
+      this.snackBar.open(result.message, 'OK', {
+        duration: 2000
+      });
+    });
+  } 
 }
 
 
-}

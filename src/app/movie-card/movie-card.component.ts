@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { UserRegistrationService } from '../fetch-api-data.service';
+import { FetchApiDataService } from '../fetch-api-data.service';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MovieGenreComponent } from '../movie-genre/movie-genre.component';
+import { MovieDetailComponent } from '../movie-detail/movie-detail.component';
 
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Token } from '@angular/compiler';
 
 @Component({
   selector: 'app-movie-card',
@@ -11,99 +12,89 @@ import { MovieGenreComponent } from '../movie-genre/movie-genre.component';
   styleUrls: ['./movie-card.component.scss']
 })
 
-
-export class MovieCardComponent implements OnInit {
+export class MovieCardComponent {
   movies: any[] = [];
-
-  constructor(
-    public fetchApiData: UserRegistrationService,
-    public snackBar: MatSnackBar,
-    public dialog: MatDialog,
+  constructor(public fetchApiData: FetchApiDataService,
+    public snackBar: MatSnackBar, 
+    public dialog: MatDialog    
     ) { }
 
   ngOnInit(): void {
     this.getMovies();
+  }
 
-}
+  favoriteMovies: any[] = [];
+  userId: string = localStorage.getItem('userId') || '';
 
-getMovies(): void {
-  this.fetchApiData.getAllMovies().subscribe((response: any) => {
-    this.movies = response;
-    console.log(this.movies);
-    return this.movies;
-  });
-}
+  getMovies(): void {
+    this.fetchApiData.getAllMovies().subscribe((response: any) => {
+      this.movies = response;
+      console.log(this.movies);
+      return this.movies;
+    });
+  }
 
-
-/**
- * 
- * @param name 
- * @param description
- * param data will passeds into the dialog when opened.
- */
-
-getGenre(name: string, description: string): void {
-  this.dialog.open(MovieGenreComponent, {
-    data: {
-      title: name,
-      content: description,
-    }
-  })
-}
-
-/**
- * 
- * @param name 
- * @param bio 
- * param data will passeds into the dialog when opened.
- */
-
-getDirector(name: string, bio: string): void {
-  this.dialog.open(MovieGenreComponent, {
-    data: {
-      title: name,
-      content: bio,
-    }
-  })
-}
-
-/**
- * 
- * @param description 
- * param data will passeds into the dialog when opened.
- */
-
-getSynopsis(description: string): void {
-  this.dialog.open(MovieGenreComponent, {
-    data: {
-      title: "Description",
-      content: description,
-    }
-  })
-}
-
-/**
- * 
- * @param id 
- * add movie to the user profile
- */
-addFavorite(id: string): void {
-  this.fetchApiData.addFavoriteMovie(id).subscribe((Response: any) => {
-    this.snackBar.open('added to favorites', 'OK', {
-      duration: 2000
+  openGenre(name: string, description: string): void {
+    this.dialog.open(MovieDetailComponent, {
+      data: {
+        title: name,
+        content: description
+      },
     })
-  })
-}
+  }
 
-isFavorite(id: string): boolean {
-  return this.fetchApiData.isFavoriteMovie(id)
-}
+    openDirector(name: string, bio: string): void {
+      this.dialog.open(MovieDetailComponent, {
+        data: {
+          title: name,
+          content: bio
+        },
+      });
+    }
 
-removeFavorite(id: string): void {
-  this.fetchApiData.deleteFavoriteMovie(id).subscribe((Response: any) => {
-    this.snackBar.open('removed to favorites', 'OK', {
-      duration: 2000
-    })
-  })
-}
+    openSynopsis(description: string): void {
+      this.dialog.open(MovieDetailComponent, {
+        data: {
+          title: 'Synopsis',
+          content: description
+        },
+      });
+    }
+
+    addFavoriteMovie(movieId: string): void {
+      let username = localStorage.getItem('user'); 
+      let token = localStorage.getItem('token');
+      console.log('Token:', token);
+      console.log('Movie ID:', movieId);
+      console.log('Username:', username);
+      if (username) {
+      this.fetchApiData.addFavoriteMovie(username, movieId).subscribe((result) => {
+        console.log(result);
+  
+        this.snackBar.open('Movie added to favorites.', 'OK', {
+          duration: 2000
+        });
+        this.favoriteMovies = result.FavoriteMovies;
+      });
+    }
+  }
+        
+  isFavoriteMovie(movieId: string): boolean {
+    return this.favoriteMovies.includes(movieId);
+  }
+    
+  
+    deleteFavoriteMovie(movieId: string): void {
+      let username = localStorage.getItem('user'); // get the username from localStorage
+      console.log('Username:', username); 
+      if (username) {
+      this.fetchApiData.deleteFavoriteMovie(username, movieId).subscribe((result) => {
+        this.snackBar.open('Movie removed from favorites.', 'OK', {
+          duration: 2000
+        });
+        // Assuming that result is the updated user document
+        this.favoriteMovies = result.FavoriteMovies;
+      });
+    }
+  }
 }

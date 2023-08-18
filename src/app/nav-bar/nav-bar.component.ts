@@ -6,10 +6,13 @@ import { Router } from '@angular/router';
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.scss']
 })
+
 export class NavBarComponent {
+
   constructor(private router: Router) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+  }
 
   toMovies(): void {
     this.router.navigate(['movies']);
@@ -19,8 +22,9 @@ export class NavBarComponent {
     this.router.navigate(['profile']);
   }
 
-  toLogout(): void {
-    this.router.navigate(['welcome']);
+  // This method will log the user out by removing the user's token and user info from local storage
+  logOut(): void {
     localStorage.clear();
+    this.router.navigate(['welcome']);
   }
 }

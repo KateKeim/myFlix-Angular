@@ -1,40 +1,31 @@
-.loading-container {
+.movie-card-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-mat-progress-spinner {
-    width: 50px;
-    height: 50px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin: -25px 0 0 -25px;
-}
-
-.movie-grid {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(300px, 1fr));
-    grid-gap: 1rem;
-    margin: 0 auto;
-}
-
-.movie-grid-items {
-    margin-top: 15px;
-    margin-bottom: 15px;
-    place-self: center;
-    padding: 5px;
-
-}
-
-mat-card {
-    align-items: center;
-    min-width: 358px;
-}
-
-img {
-    max-height: 350px;
-    max-width: 450px;
-    object-fit: contain;
-}
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  
+    .movie-card {
+      margin: 1rem;
+      flex: 1 0 300px; // Each card will grow and shrink as needed, but not shrink smaller than 300px
+      width: 100%;
+      max-width: 300px; // Each card will not be wider than 300px
+  
+      .card-image {
+        width: 100%;
+        height: auto;
+      }
+  
+      .card-actions {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  
+    // If the viewport is less than 300px wide, make the movie cards full width to accommodate smaller screens
+    @media (max-width: 300px) {
+      .movie-card {
+        flex: 1 0 100%;
+        max-width: 100%;
+      }
+    }
+  }
+  
